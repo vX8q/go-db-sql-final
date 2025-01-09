@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-type Parcel1 struct {
+type Parcel struct {
 	Number    int
 	Client    int
 	Status    string
@@ -80,7 +80,7 @@ func (s ParcelStore) SetStatus(number int, status string) error {
 
 func (s ParcelStore) SetAddress(number int, address string) error {
 	query := `UPDATE parcel SET address = ? WHERE number = ? AND status = ?`
-	_, err := s.db.Exec(query, address, number, "registered")
+	_, err := s.db.Exec(query, address, number, ParcelStatusRegistered)
 	if err != nil {
 		return fmt.Errorf("failed to set address for parcel %d: %v", number, err)
 	}
@@ -89,7 +89,7 @@ func (s ParcelStore) SetAddress(number int, address string) error {
 
 func (s ParcelStore) Delete(number int) error {
 	query := `DELETE FROM parcel WHERE number = ? AND status = ?`
-	_, err := s.db.Exec(query, number, "registered")
+	_, err := s.db.Exec(query, number, ParcelStatusRegistered)
 	if err != nil {
 		return fmt.Errorf("failed to delete parcel %d: %v", number, err)
 	}
